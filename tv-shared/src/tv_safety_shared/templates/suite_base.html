@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ suite_module }} | TV Safety</title>
+  <link rel="stylesheet" href="{{ url_for('suite_ui.static', filename='suite.css') }}">
+  <script defer src="{{ url_for('suite_ui.static', filename='suite.js') }}"></script>
+  {% block module_assets %}{% endblock %}
+</head>
+<body class="suite suite-{{ suite_module|lower }}">
+  <header class="suite-topbar">
+    <a class="suite-brand" href="{{ url_for('index') }}"><span class="brand-mark">TV</span><span><strong>TV Safety</strong><small>Local device suite</small></span></a>
+    {% if session.get('authenticated') %}
+    <div class="topbar-actions">
+      <nav class="module-switch" aria-label="TV Safety modules">
+        <a href="{{ request.scheme }}://{{ request.host.split(':')[0] }}:8090" {% if suite_module == 'Observer' %}aria-current="page"{% endif %}>Observer</a>
+        <a href="{{ request.scheme }}://{{ request.host.split(':')[0] }}:8091" {% if suite_module == 'Controller' %}aria-current="page"{% endif %}>Controller</a>
+      </nav>
+      <form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="topbar-button" type="submit">Sign out</button></form>
+    </div>
+    {% endif %}
+  </header>
+
+  {% if session.get('authenticated') %}
+  <div class="suite-layout">
+    <aside class="suite-sidebar">
+      <div class="module-identity"><span class="module-dot"></span><div><strong>{{ suite_module }}</strong><small>{{ suite_purpose }}</small></div></div>
+      <nav class="section-nav" aria-label="{{ suite_module }} sections">{% block suite_nav %}{% endblock %}</nav>
+      <div class="sidebar-foot"><span class="local-indicator"></span><span>Private LAN</span></div>
+    </aside>
+    <main class="suite-main" id="main-content">
+      <div class="flash-stack" aria-live="polite">{% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="notice {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}</div>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  {% else %}
+  <main class="auth-main">{% block auth_content %}{% block content_logged_out %}{% endblock %}{% endblock %}</main>
+  {% endif %}
+</body>
+</html>

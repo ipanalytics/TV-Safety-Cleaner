@@ -1,0 +1,15 @@
+{% macro page_header(kicker, title, description='') -%}
+<header class="page-header">
+  <p class="page-kicker">{{ kicker }}</p>
+  <h1>{{ title }}</h1>
+  {% if description %}<p class="page-description">{{ description }}</p>{% endif %}
+</header>
+{%- endmacro %}
+
+{% macro metric(label, value, tone='') -%}
+<div class="metric {{ tone }}"><span>{{ label }}</span><strong>{{ value }}</strong></div>
+{%- endmacro %}
+
+{% macro empty_state(title, description, action_url='', action_label='') -%}
+<section class="empty-state"><strong>{{ title }}</strong><p>{{ description }}</p>{% if action_url %}<a href="{{ action_url }}">{{ action_label }}</a>{% endif %}</section>
+{%- endmacro %}
