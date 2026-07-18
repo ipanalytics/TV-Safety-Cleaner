@@ -1,0 +1,5 @@
+{% extends "suite_base.html" %}
+{% set suite_module = "Controller" %}
+{% set suite_purpose = "Safe maintenance" %}
+{% block module_assets %}<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}"><script defer src="{{ url_for('static', filename='apk.js') }}"></script>{% endblock %}
+{% block suite_nav %}{% for section in sections %}<a href="{{ url_for('section', name=section.lower().replace(' ', '-')) }}" {% if section == active %}aria-current="page"{% endif %}>{{ section }}</a>{% endfor %}{% endblock %}

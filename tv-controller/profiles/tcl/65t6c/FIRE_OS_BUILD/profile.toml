@@ -1,0 +1,8 @@
+[profile]
+id = "tcl-65t6c-fire-os-template"
+platform = "amazon-fire-os"
+model = "TCL 65T6C"
+firmware = "REPLACE_WITH_EXACT_BUILD"
+fingerprint = "REPLACE_WITH_EXACT_FINGERPRINT"
+verified = false
+recovery_status = "Not checked"

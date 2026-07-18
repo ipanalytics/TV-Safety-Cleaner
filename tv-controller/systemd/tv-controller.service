@@ -1,0 +1,25 @@
+[Unit]
+Description=TV Controller safety and APK sideloading service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tv-safety
+Group=tv-safety
+WorkingDirectory=/srv/tv-controller
+EnvironmentFile=/srv/tv-safety-data/observer/observer.env
+Environment=HOME=/srv/tv-safety-data/controller
+Environment=ANDROID_USER_HOME=/srv/tv-safety-data/controller
+ExecStart=/srv/tv-controller/.venv/bin/gunicorn --bind 0.0.0.0:8091 --workers 1 --access-logfile - tv_controller.wsgi:app
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/tv-safety-data/controller /srv/tv-safety-data/backups /srv/tv-safety-data/logs
+
+[Install]
+WantedBy=multi-user.target

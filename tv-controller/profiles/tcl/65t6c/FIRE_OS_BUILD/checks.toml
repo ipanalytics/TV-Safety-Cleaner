@@ -1,0 +1,5 @@
+[checks]
+adb = true
+launcher = true
+settings = true
+network = true

@@ -1,0 +1,90 @@
+.overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.overview-grid > div { min-width: 0; }
+.apk-status-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mode-banner { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 14px; padding: 14px 16px; border-left: 4px solid #64767d; border-radius: 5px; background: white; }
+.mode-banner.enabled { border-color: var(--success); background: #f5faf7; }
+.mode-banner p { margin: 3px 0 0; color: var(--muted); }
+.mode-banner a { flex: 0 0 auto; font-weight: 750; }
+.trust-note { margin-top: 12px; }
+.apk-download-panel form { margin-top: 16px; }
+.task-list { display: grid; gap: 9px; margin-top: 14px; }
+.task-heading-actions { display: flex; align-items: center; gap: 8px; }
+.compact { min-height: 32px; padding: 5px 9px; font-size: 12px; }
+.connection-state { display: inline-flex; width: max-content; border-radius: 4px; padding: 3px 8px; background: #e5ebed; color: #405057; font-size: 13px; }
+.connection-state.online { background: #def0e7; color: #175f42; }
+.connection-state.offline { background: #f7e2e2; color: #852d2d; }
+.connection-state.checking { background: #f7ead8; color: #795012; }
+.apk-status-strip small { color: var(--muted); overflow-wrap: anywhere; }
+.task-row { width: 100%; min-width: 0; display: grid; grid-template-columns: minmax(220px, 1fr) minmax(160px, 320px) 48px; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--line); border-left: 4px solid #176f82; border-radius: 5px; background: white; }
+.task-row > * { min-width: 0; }
+.task-row > div:first-child { display: grid; gap: 3px; }
+.task-row span { overflow-wrap: anywhere; }
+.task-row.result { border-left-color: var(--success); background: #f7fbf9; }
+.task-row.failed { border-left-color: var(--danger); background: #fffafa; }
+.task-outcome { justify-self: end; border-radius: 4px; padding: 4px 9px; background: #def0e7; color: #175f42; font-size: 12px; font-weight: 750; }
+.task-outcome.failed { background: #f7e2e2; color: #852d2d; }
+.progress { height: 10px; overflow: hidden; border-radius: 3px; background: #dce4e7; }
+.progress span { display: block; height: 100%; background: #176f82; transition: width 180ms ease; }
+.task-row.result .progress span { background: var(--success); }
+.task-row.failed .progress span { background: var(--danger); }
+.library-section, .task-section { min-width: 0; }
+.library-section .table-wrap { margin-top: 16px; }
+.apk-table { min-width: 860px; table-layout: fixed; }
+.apk-table th:nth-child(1) { width: 27%; }
+.apk-table th:nth-child(2) { width: 13%; }
+.apk-table th:nth-child(3) { width: 17%; }
+.apk-table th:nth-child(4) { width: 43%; }
+.apk-table td { height: 104px; white-space: normal; }
+.apk-table td > strong, .apk-table td > code, .apk-table td > span { display: block; }
+.apk-table td > code { margin-top: 5px; color: #4f6066; word-break: break-all; }
+.apk-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.apk-actions button { min-height: 34px; padding: 6px 10px; font-size: 13px; }
+.locked-copy { min-height: 32px; background: #f1f3f4; }
+.row-feedback { min-height: 20px; margin-top: 8px; color: var(--muted); font-size: 12px; }
+.row-feedback.running { color: #176f82; }
+.row-feedback.success { color: #175f42; font-weight: 700; }
+.row-feedback.error { color: #8a2f2f; font-weight: 700; }
+.empty-table-row td { height: auto; padding: 24px; text-align: center; }
+.empty-table-row strong, .empty-table-row span { display: block; }
+.toast-region { position: fixed; z-index: 50; top: 76px; right: 18px; display: grid; gap: 8px; width: min(380px, calc(100vw - 32px)); pointer-events: none; }
+.toast { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid #aebbc0; border-left: 4px solid #176f82; border-radius: 5px; background: white; box-shadow: 0 10px 28px rgba(23, 32, 38, .16); }
+.toast.error { border-left-color: var(--danger); }
+.toast span { color: var(--muted); }
+.confirm-dialog { width: min(560px, calc(100vw - 32px)); padding: 0; border: 1px solid #9facb1; border-radius: 6px; color: var(--ink); box-shadow: 0 24px 70px rgba(12, 22, 28, .34); }
+.confirm-dialog::backdrop { background: rgba(15, 26, 32, .58); }
+.confirm-dialog form { display: block; padding: 20px; }
+.dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.dialog-header h2 { margin: 0; font-size: 22px; }
+.dialog-close { min-width: 36px; padding: 4px; border-color: #aeb9bd; background: white; color: #35464d; font-size: 22px; }
+.confirm-dialog > form > p { color: var(--muted); }
+.dialog-facts { grid-template-columns: 100px 1fr; padding: 13px; }
+.confirm-check, .confirm-type { margin-top: 16px; padding: 12px; border: 1px solid var(--line); background: #f6f8f8; }
+.confirm-check { display: flex; align-items: center; }
+.confirm-check input { min-height: 0; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+.policy-toggle { flex: 1 1 100%; align-items: flex-start; padding: 12px; border: 1px solid var(--line); border-radius: 5px; background: #f7f9f9; }
+.policy-toggle span { display: grid; gap: 2px; }
+.policy-toggle small { color: var(--muted); }
+.journal-table { min-width: 980px; }
+.journal-table td { white-space: normal; }
+.journal-table td > span, .journal-table td > code { display: block; }
+.journal-table details { min-width: 190px; }
+.journal-table form { display: grid; align-items: stretch; margin: 0; padding: 10px; }
+.journal-table .check { align-items: flex-start; font-size: 12px; }
+.blocker-list { margin: 16px 0; padding: 12px 12px 12px 32px; border-left: 4px solid var(--danger); background: #fffafa; color: #852d2d; }
+.profile-table { min-width: 820px; }
+.profile-table td > strong, .profile-table td > span, .profile-table td > code { display: block; }
+.profile-table td > span, .profile-table td > code { margin-top: 4px; }
+.package-control-panel form { align-items: end; }
+
+@media (max-width: 860px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .apk-status-strip { grid-template-columns: 1fr 1fr; }
+  .mode-banner { align-items: flex-start; flex-direction: column; }
+  .task-row { grid-template-columns: 1fr 48px; }
+  .task-row .progress { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (max-width: 520px) {
+  .apk-status-strip { grid-template-columns: 1fr; }
+}

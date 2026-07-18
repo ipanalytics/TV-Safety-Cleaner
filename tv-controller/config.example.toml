@@ -1,0 +1,10 @@
+[server]
+host = "0.0.0.0"
+port = 8091
+
+[safety]
+enable_user_apk_changes = false
+enable_system_apply = false
+
+[storage]
+root = "/srv/tv-safety-data/controller"

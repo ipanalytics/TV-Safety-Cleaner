@@ -1,0 +1,7 @@
+[packages]
+confirmed_safe = []
+probably_safe = []
+telemetry_candidate = []
+advertising_candidate = []
+risky = []
+never_touch = []
