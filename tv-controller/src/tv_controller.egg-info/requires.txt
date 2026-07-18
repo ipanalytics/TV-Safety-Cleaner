@@ -1,0 +1,3 @@
+Flask<4,>=2.3
+gunicorn<24,>=21
+tv-safety-shared==0.1.0

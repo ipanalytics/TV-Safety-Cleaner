@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: tv-controller
+Version: 0.1.0
+Requires-Python: >=3.11
+License-File: LICENSE
+Requires-Dist: Flask<4,>=2.3
+Requires-Dist: gunicorn<24,>=21
+Requires-Dist: tv-safety-shared==0.1.0
+Dynamic: license-file

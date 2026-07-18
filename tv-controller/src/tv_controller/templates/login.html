@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block auth_content %}
 <section class="login">
-  <p class="page-kicker">Controller</p>
   <h1>Controller access</h1>
   <p>Use the same password as TV Observer.</p>
   {% if request.args.get('error') %}<p class="notice error">Incorrect password.</p>{% endif %}

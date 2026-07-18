@@ -1,0 +1,3 @@
+[console_scripts]
+tv-apk = tv_controller.apk_cli:main
+tv-controller = tv_controller.cli:main

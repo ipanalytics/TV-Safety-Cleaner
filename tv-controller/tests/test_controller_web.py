@@ -335,7 +335,7 @@ def test_profile_preview_and_typed_apply_confirmation(tmp_path: Path, monkeypatc
     monkeypatch.setattr(manager, "start_profile_apply", lambda _: "profile-task")
     client = authenticated_client(app)
     page = client.get(f"/section/plans?profile={profile.id}")
-    assert b"Compatibility-gated preview" in page.data
+    assert b"Apply exact profile" in page.data
     token = re.search(rb'name="csrf_token" value="([^"]+)"', page.data)
     assert token
     rejected = client.post(
