@@ -21,7 +21,6 @@ fail() {
 validate_bundle() {
   local required
   for required in \
-    "$BUNDLE_DIR/README.md" \
     "$SHARED_SOURCE/pyproject.toml" \
     "$SHARED_SOURCE/src/tv_safety_shared/ui.py" \
     "$SHARED_SOURCE/src/tv_safety_shared/templates/suite_base.html" \

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -11,6 +12,24 @@ def test_root_deployer_bundle_check() -> None:
     result = subprocess.run(  # noqa: S603
         ["bash", str(DEPLOYER), "--check"],  # noqa: S607
         cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "Bundle structure and shell syntax are valid" in result.stdout
+
+
+def test_root_deployer_does_not_require_readme(tmp_path: Path) -> None:
+    bundle = tmp_path / "upload"
+    bundle.mkdir()
+    shutil.copy2(DEPLOYER, bundle / "tv.sh")
+    for project in ("tv-observer", "tv-controller", "tv-shared"):
+        (bundle / project).symlink_to(ROOT / project, target_is_directory=True)
+
+    result = subprocess.run(  # noqa: S603
+        ["bash", str(bundle / "tv.sh"), "--check"],  # noqa: S607
+        cwd=bundle,
         capture_output=True,
         text=True,
         check=False,
@@ -37,7 +56,7 @@ def test_root_readme_documents_real_deployment_and_compatibility_boundaries() ->
 
 def test_deployer_preserves_private_state_boundaries() -> None:
     deployer = DEPLOYER.read_text(encoding="utf-8")
-    assert '"$BUNDLE_DIR/README.md"' in deployer
+    assert '"$BUNDLE_DIR/README.md"' not in deployer
     assert "/srv/tv-safety-data" in deployer
     assert "TV_OBSERVER_ADMIN_PASSWORD" in deployer
     assert "at least 6 characters" in deployer

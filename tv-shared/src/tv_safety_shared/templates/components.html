@@ -1,6 +1,5 @@
-{% macro page_header(kicker, title, description='') -%}
+{% macro page_header(title, description='') -%}
 <header class="page-header">
-  <p class="page-kicker">{{ kicker }}</p>
   <h1>{{ title }}</h1>
   {% if description %}<p class="page-description">{{ description }}</p>{% endif %}
 </header>

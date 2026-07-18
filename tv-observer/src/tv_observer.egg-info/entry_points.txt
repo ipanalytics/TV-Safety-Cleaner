@@ -1,0 +1,2 @@
+[console_scripts]
+tv-observer = tv_observer.cli:main

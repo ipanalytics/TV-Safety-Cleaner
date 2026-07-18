@@ -13,7 +13,7 @@
   --warning: #ad6a16;
   --danger: #a73b3b;
   color-scheme: light;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background: var(--canvas);
 }
@@ -80,7 +80,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .module-identity > div { display: grid; }
 .module-identity strong { font-size: 14px; }
 .module-identity small { margin-top: 2px; color: #94a4aa; font-size: 11px; }
-.module-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+.module-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 .section-nav { display: grid; gap: 3px; padding: 14px 10px; }
 .section-nav a { position: relative; min-height: 40px; display: flex; align-items: center; padding: 8px 12px; border-radius: 5px; color: #b9c5c9; text-decoration: none; font-size: 14px; }
 .section-nav a:hover { background: #223037; color: white; }
@@ -91,14 +91,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .suite-main { width: min(1280px, 100%); min-width: 0; padding: 34px 40px 56px; }
 .page-header { margin-bottom: 24px; }
-.page-kicker, .section-kicker { margin: 0 0 5px; color: var(--accent); font-size: 11px; font-weight: 850; text-transform: uppercase; }
 .page-header h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: 0; }
 .page-description { max-width: 74ch; margin: 8px 0 0; color: var(--muted); }
 h2 { margin: 28px 0 12px; font-size: 19px; letter-spacing: 0; }
 .flash-stack { display: grid; gap: 8px; }
-.notice { padding: 11px 13px; border: 1px solid #bfd0d5; border-left: 4px solid #176f82; border-radius: 5px; background: white; }
-.notice.success { border-left-color: var(--success); }
-.notice.error { border-left-color: var(--danger); }
+.notice { padding: 11px 13px; border: 1px solid #7f9ba3; border-radius: 5px; background: white; }
+.notice.success { border-color: var(--success); }
+.notice.error { border-color: var(--danger); }
 
 .metric-strip, .status-band, .apk-status-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
 .metric, .status-band > div, .apk-status-strip > div { min-height: 82px; display: grid; align-content: space-between; gap: 8px; padding: 15px 17px; border-right: 1px solid var(--line); }
@@ -116,12 +115,12 @@ h2 { margin: 28px 0 12px; font-size: 19px; letter-spacing: 0; }
 .section-block h2, .settings-form h2, .capture h2, .password-panel h2, .pull-panel h2, .instructions h2 { margin-top: 0; }
 .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
 .section-heading h2 { margin: 0; }
-.section-heading p:not(.section-kicker) { max-width: 74ch; margin: 5px 0 0; color: var(--muted); }
-.empty, .empty-state, .quiet-state { padding: 20px; border: 1px dashed #bac5c9; border-radius: 6px; background: #fafbfb; }
+.section-heading p { max-width: 74ch; margin: 5px 0 0; color: var(--muted); }
+.empty, .empty-state, .quiet-state { display: grid; gap: 4px; padding: 20px; border: 1px dashed #bac5c9; border-radius: 6px; background: #fafbfb; }
 .empty p, .empty-state p, .quiet-state span { max-width: 72ch; margin: 5px 0 0; color: var(--muted); }
 .empty a, .empty-state a { display: inline-block; margin-top: 10px; font-weight: 750; }
-.info { border-left: 4px solid var(--accent); border-style: solid; }
-.warning { border-left: 4px solid var(--warning); border-style: solid; }
+.info { border-color: var(--accent); border-style: solid; }
+.warning { border-color: var(--warning); border-style: solid; }
 .summary { max-width: 82ch; color: var(--muted); }
 
 form { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
@@ -154,7 +153,7 @@ summary { padding: 10px 13px; color: #43535a; font-weight: 700; cursor: pointer;
 details > p { padding: 0 13px 13px; color: var(--muted); }
 
 .auth-main { display: grid; place-items: start center; min-height: calc(100vh - 64px); padding: 70px 20px; }
-.login { width: min(430px, 100%); margin: 0; padding: 26px; border: 1px solid var(--line); border-radius: 6px; background: white; box-shadow: 0 16px 45px rgba(18, 27, 32, .09); }
+.login { width: min(430px, 100%); margin: 0; padding: 26px; border: 1px solid var(--line); border-radius: 6px; background: white; }
 .login h1 { margin: 3px 0 8px; font-size: 26px; }
 .login form { align-items: stretch; flex-direction: column; }
 
