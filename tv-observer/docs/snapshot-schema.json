@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tv-observer:snapshot-manifest:1.0",
+  "title": "TV Observer inventory snapshot manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "observer_version",
+    "created_utc",
+    "created_local",
+    "model",
+    "platform",
+    "firmware",
+    "fingerprint",
+    "security_patch",
+    "package_count",
+    "kind"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "kind": {"const": "inventory-snapshot"},
+    "package_count": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": true
+}

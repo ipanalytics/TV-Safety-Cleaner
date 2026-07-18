@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "components.html" import page_header, metric, empty_state %}
+{% block content %}
+{% set latest = state.latest %}
+{% set descriptions = {
+  'Overview': 'Current verified facts about the television and its firmware.',
+  'Connect': 'Authorize ADB and capture a read-only inventory snapshot.',
+  'Applications': 'Canonical package inventory for the entire TV Safety suite.',
+  'Snapshots': 'Checksum-verified evidence captured from the television.',
+  'Observe': 'Optional time-bounded observation while ADB is authorized.',
+  'Recovery': 'Manual readiness evidence; never presented as a firmware backup.',
+  'Reports': 'Copy or export verified inventory for external analysis.',
+  'Settings': 'Change values that alter suite behavior or access.',
+  'Diagnostics': 'Read-only service, storage and network facts.'
+} %}
+{{ page_header('Observer · read-only evidence', active, descriptions.get(active, '')) }}
+
+{% if active == 'Overview' %}
+  {% if latest %}
+  <section class="metric-strip">{{ metric('Model', latest.manifest.model) }}{{ metric('Platform', latest.manifest.platform) }}{{ metric('Inventory', 'Verified', 'success') }}</section>
+  <section class="detail-grid"><div><h2>Device</h2><dl><dt>Local label</dt><dd>{{ state.snapshots[0].device }}</dd><dt>Serial</dt><dd><code>{{ latest.device.serial }}</code></dd><dt>Snapshot</dt><dd>{{ latest.manifest.created_local }}</dd></dl></div><div><h2>Firmware</h2><dl><dt>Version</dt><dd>{{ latest.firmware.version }}</dd><dt>Security patch</dt><dd>{{ latest.firmware.security_patch }}</dd><dt>Fingerprint</dt><dd><code>{{ latest.firmware.fingerprint }}</code></dd></dl></div></section>
+  {% else %}
+  {{ empty_state('No TV inventory yet', 'Connect and authorize the television when you are ready. Observer has not changed the TV and does not invent disconnected device facts.', url_for('section', name='connect'), 'Open connection') }}
+  {% endif %}
+
+{% elif active == 'Connect' %}
+  {% if connection_error %}<section class="empty warning"><strong>ADB is currently unavailable</strong><p>This is expected when ADB is disabled, the TV is disconnected, or authorization has not been approved.</p><details><summary>Technical detail</summary><p><code>{{ connection_error }}</code></p></details></section>{% endif %}
+  {% if devices %}
+  <div class="table-wrap"><table><thead><tr><th>Serial</th><th>State</th><th>Details</th></tr></thead><tbody>{% for device in devices %}<tr><td><code>{{ device.serial }}</code></td><td><span class="badge {{ device.state }}">{{ device.state }}</span></td><td>{{ device.details or 'No model details reported' }}</td></tr>{% endfor %}</tbody></table></div>
+  {% set connected = devices|selectattr('state', 'equalto', 'connected')|list %}
+  {% if connected %}<section class="section-block"><div class="section-heading"><div><p class="section-kicker">Verified capture</p><h2>Create snapshot</h2><p>Only read commands are sent. The result is checksum-protected before Controller can use it.</p></div></div><form method="post" action="{{ url_for('snapshot_capture_route') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>TV<select name="serial" required>{% for device in connected %}<option value="{{ device.serial }}">{{ device.serial }} {{ device.details }}</option>{% endfor %}</select></label><label>Local label<input name="device_name" value="living-room-tv" pattern="[A-Za-z0-9._-]+" maxlength="80" required></label><button type="submit">Create read-only snapshot</button></form></section>
+  {% else %}{{ empty_state('No authorized TV detected', 'Enable ADB manually, connect the TV, and approve the Raspberry Pi key on the television. No write command is sent.') }}{% endif %}
+  {% else %}{{ empty_state('No ADB device detected', 'This is normal while developer access is off or the TV is disconnected. Enable it only when you are ready to capture inventory.') }}{% endif %}
+
+{% elif active == 'Applications' %}
+  {% if latest and latest.packages %}
+  <div class="toolbar"><button type="button" data-copy-url="{{ url_for('applications_text') }}">Copy inventory</button><a class="button-link secondary" href="{{ url_for('applications_json') }}">Download JSON</a><a class="button-link secondary" href="{{ url_for('applications_text') }}">Download text</a><span id="copy-status" role="status"></span></div>
+  <p class="summary">{{ latest.packages|length }} packages from the latest verified snapshot. Controller links here instead of maintaining a second package inventory.</p>
+  <div class="table-wrap"><table class="packages"><thead><tr><th>Package</th><th>Version</th><th>Install level</th><th>State</th><th>Requested permissions</th></tr></thead><tbody>{% for package in latest.packages %}<tr><td><code>{{ package.name }}</code></td><td>{{ package.version }}</td><td><span class="badge level-{{ package.install_level }}">{{ package.install_level }}</span></td><td>{{ 'Enabled' if package.enabled else 'Disabled' }}</td><td class="permissions">{{ package.requested_permissions|join(', ') if package.requested_permissions else 'None reported' }}</td></tr>{% endfor %}</tbody></table></div>
+  {% else %}{{ empty_state('No application inventory', 'Create a snapshot after ADB authorization. Package names, levels, states, versions and permissions are read without changing the TV.', url_for('section', name='connect'), 'Open connection') }}{% endif %}
+
+{% elif active == 'Snapshots' %}
+  {% if state.snapshots %}<div class="table-wrap"><table><thead><tr><th>Device</th><th>Created</th><th>Model</th><th>Platform</th><th>Packages</th></tr></thead><tbody>{% for item in state.snapshots %}<tr><td>{{ item.device }}</td><td>{{ item.created }}</td><td>{{ item.model }}</td><td>{{ item.platform }}</td><td>{{ item.packages }}</td></tr>{% endfor %}</tbody></table></div>{% else %}{{ empty_state('No verified snapshots', 'Partial, corrupted and checksum-invalid directories are deliberately hidden.', url_for('section', name='connect'), 'Create first snapshot') }}{% endif %}
+
+{% elif active == 'Observe' %}
+  {{ empty_state('No observation session running', 'Extended observation is optional and should only run while ADB is manually enabled and authorized.') }}
+  <section class="section-block"><form method="post" action="{{ url_for('observation_start') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Session name<input name="name" maxlength="100" required></label><button type="submit">Record session request</button></form></section>
+
+{% elif active == 'Recovery' %}
+  <section class="empty info"><strong>Recovery readiness, not a recovery image</strong><p>Only manually verified evidence is shown as complete. A snapshot is inventory, not a firmware backup.</p></section>
+  <div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th><th>Evidence</th></tr></thead><tbody>{% for item in recovery['items'] %}<tr><td>{{ item.name }}</td><td><span class="badge">{{ item.status }}</span></td><td>{{ item.evidence or 'No evidence recorded' }}</td></tr>{% endfor %}</tbody></table></div>
+
+{% elif active == 'Reports' %}
+  {% if latest %}<section class="section-block"><div class="section-heading"><div><p class="section-kicker">Verified inventory</p><h2>Application report</h2><p>Use text for chat and JSON for structured analysis. Review content before sharing it outside the LAN.</p></div></div><div class="toolbar"><button type="button" data-copy-url="{{ url_for('applications_text') }}">Copy report</button><a class="button-link secondary" href="{{ url_for('applications_json') }}">Download JSON</a><span id="copy-status" role="status"></span></div></section>{% else %}{{ empty_state('No report source yet', 'Create a verified snapshot first. Reports never invent values for a disconnected TV.') }}{% endif %}
+
+{% elif active == 'Settings' %}
+  {% if settings.password_change_available %}<section class="settings-form"><div class="section-heading"><div><p class="section-kicker">Shared access</p><h2>Change password</h2><p>Updates Observer and Controller together. Minimum length: 6 characters.</p></div></div><form method="post" action="{{ url_for('settings_password') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Current password<input type="password" name="current_password" required autocomplete="current-password"></label><label>New password<input type="password" name="new_password" minlength="6" required autocomplete="new-password"></label><label>Repeat password<input type="password" name="confirm_password" minlength="6" required autocomplete="new-password"></label><button type="submit">Change shared password</button></form></section>{% else %}{{ empty_state('Password management unavailable', 'This runtime was started without the shared credential file.') }}{% endif %}
+
+{% else %}
+  <section class="metric-strip">{{ metric('Observer', settings.observer_url) }}{{ metric('Controller', settings.controller_url) }}{{ metric('Verified snapshots', state.snapshots|length) }}</section>
+  <section class="detail-grid"><div><h2>Network</h2><dl><dt>Bind</dt><dd><code>{{ settings.bind }}</code></dd><dt>Allowed clients</dt><dd>{{ settings.trusted_networks }}</dd><dt>Exposure</dt><dd>Private LAN only</dd></dl></div><div><h2>Storage</h2><dl><dt>Snapshots</dt><dd><code>{{ settings.snapshot_root }}</code></dd><dt>Suite data</dt><dd><code>{{ settings.data_root }}</code></dd><dt>TV writes</dt><dd>None</dd></dl></div></section>
+{% endif %}
+{% endblock %}

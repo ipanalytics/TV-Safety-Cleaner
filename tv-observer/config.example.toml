@@ -1,0 +1,11 @@
+[server]
+host = "0.0.0.0"
+port = 8090
+trusted_cidrs = ["127.0.0.0/8", "::1/128", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+
+[storage]
+root = "/srv/tv-safety-data/observer"
+backups = "/srv/tv-safety-data/backups"
+
+[observation]
+poll_interval_seconds = 30

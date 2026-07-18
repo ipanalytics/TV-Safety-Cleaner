@@ -1,0 +1,10 @@
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.detail-grid > div { min-width: 0; }
+.packages { min-width: 920px; }
+#copy-status { color: var(--muted); font-size: 13px; font-weight: 700; }
+.settings-form { max-width: 920px; }
+.settings-form form { align-items: end; }
+
+@media (max-width: 760px) {
+  .detail-grid { grid-template-columns: 1fr; }
+}

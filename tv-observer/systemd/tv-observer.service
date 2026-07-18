@@ -1,0 +1,22 @@
+[Unit]
+Description=TV Observer read-only inventory service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tv-safety
+Group=tv-safety
+WorkingDirectory=/srv/tv-observer
+EnvironmentFile=/srv/tv-safety-data/observer/observer.env
+ExecStart=/srv/tv-observer/.venv/bin/gunicorn --bind 0.0.0.0:8090 --workers 2 --access-logfile - tv_observer.wsgi:app
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/tv-safety-data
+
+[Install]
+WantedBy=multi-user.target
